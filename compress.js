@@ -15,15 +15,20 @@ On(Q('#input-img'), 'change', function () {
       file   = Q('input[type=file]').files[0];
 
   On(reader, 'loadend', function () {
+    On(origin, 'load', function () {
+      var q80 = compress(origin, .8),
+          q40 = compress(origin, .4),
+          q10 = compress(origin, .1);
+      imgs[1].innerHTML = "文件大小：" + q80.src.length;
+      imgs[2].innerHTML = "文件大小：" + q40.src.length;
+      imgs[3].innerHTML = "文件大小：" + q10.src.length;
+      imgs[1].appendChild(compress(origin, .8));
+      imgs[2].appendChild(compress(origin, .4));
+      imgs[3].appendChild(compress(origin, .1));
+    });
     origin.src = reader.result;
-    imgs[0].innerHTML = '';
-    imgs[1].innerHTML = '';
-    imgs[2].innerHTML = '';
-    imgs[3].innerHTML = '';
+    imgs[0].innerHTML = '文件大小：' + origin.src.length;
     imgs[0].appendChild(origin);
-    imgs[1].appendChild(compress(origin, .8));
-    imgs[2].appendChild(compress(origin, .4));
-    imgs[3].appendChild(compress(origin, .1));
     Q('#previews').className = 'show';
   });
 
@@ -39,7 +44,7 @@ function compress (origin, rate) {
 
   canvas.width  = origin.width;
   canvas.height = origin.height;
-  ctx.drawImage(origin, 0, 0);
+  ctx.drawImage(origin, 0, 0, origin.width, origin.height);
   output.src = canvas.toDataURL('image/jpeg', rate);
   return output;
 }
