@@ -1,9 +1,10 @@
 var imgs = [
-  Q('#img-q100'),
-  Q('#img-q80'),
-  Q('#img-q40'),
-  Q('#img-q10')
-];
+      Q('#img-q100'),
+      Q('#img-q80'),
+      Q('#img-q40'),
+      Q('#img-q10')
+    ],
+    sizeRatio = 1;
 
 On(Q('#btn-upload'), 'touchend', function () {
   Q('#input-img').click();
@@ -15,19 +16,22 @@ On(Q('#input-img'), 'change', function () {
       file   = Q('input[type=file]').files[0];
 
   On(reader, 'loadend', function () {
+    if (reader.result.length > 1024 * 1024) {
+      sizeRatio = Math.pow(1024 * 1024 / reader.result.length, 0.5);
+    }
     On(origin, 'load', function () {
       var q80 = compress(origin, .8),
           q40 = compress(origin, .4),
           q10 = compress(origin, .1);
-      imgs[1].innerHTML = "文件大小：" + q80.src.length;
-      imgs[2].innerHTML = "文件大小：" + q40.src.length;
-      imgs[3].innerHTML = "文件大小：" + q10.src.length;
+      imgs[1].innerHTML = "文件大小：" + (q80.src.length / 1024).toFixed(2) + 'KB';
+      imgs[2].innerHTML = "文件大小：" + (q40.src.length / 1024).toFixed(2) + 'KB';
+      imgs[3].innerHTML = "文件大小：" + (q10.src.length / 1024).toFixed(2) + 'KB';
       imgs[1].appendChild(compress(origin, .8));
       imgs[2].appendChild(compress(origin, .4));
       imgs[3].appendChild(compress(origin, .1));
     });
     origin.src = reader.result;
-    imgs[0].innerHTML = '文件大小：' + origin.src.length;
+    imgs[0].innerHTML = '文件大小：' + (origin.src.length / 1024).toFixed(2) + 'KB';
     imgs[0].appendChild(origin);
     Q('#previews').className = 'show';
   });
@@ -41,13 +45,17 @@ function compress (origin, rate) {
   var canvas = document.createElement('canvas'),
       ctx    = canvas.getContext('2d'),
       output = new Image(),
-      type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1');
+      type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1'),
+      size   = {
+        width: (origin.naturalWidth || origin.width) * sizeRatio,
+        height: (origin.naturalHeight || origin.height) * sizeRatio
+      };
 
-  console.log(type);
-
-  canvas.width  = origin.width;
-  canvas.height = origin.height;
-  ctx.drawImage(origin, 0, 0, origin.width, origin.height);
+  canvas.width        = size.width;
+  canvas.height       = size.height;
+  canvas.style.width  = size.width + 'px';
+  canvas.style.height = size.height + 'px';
+  ctx.drawImage(origin, 0, 0, size.width, size.height);
   output.src = canvas.toDataURL(type, rate);
   return output;
 }
