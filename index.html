@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tommy's canvas example.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<style>
+    html,
+    body {
+        height: 100%;
+        background: #666;
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    h1,
+    h2 {
+        color: #fff;
+        font-size: 20px;
+        font-weight: normal;
+    }
+    #upload-form {
+        display: none;
+    }
+    #btn-upload {
+        margin: 10px 0;
+        background: #69d;
+        color: #fff;
+        text-align: center;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        border-bottom: 3px solid #47b;
+        text-decoration: none;
+    }
+    .img-box img {
+        display: block;
+        width: 100%;
+    }
+    #previews {
+        display: none;
+    }
+    #previews.show {
+        display: block;
+    }
+</style>
+<body>
+    <h1>使用Canvas压缩图片</h1>
+    <a href="#" id="btn-upload">点击上传图片</a>
+    <form id="upload-form">
+        <input type="file" id="input-img">
+    </form>
+    <div id="previews">
+        <div>
+            <h2>原图：</h2>
+            <div class="img-box" id="img-q100"></div>
+        </div>
+        <div>
+            <h2>80%品质：</h2>
+            <div class="img-box" id="img-q80"></div>
+        </div>
+        <div>
+            <h2>40%品质：</h2>
+            <div class="img-box" id="img-q40"></div>
+        </div>
+        <div>
+            <h2>10%品质：</h2>
+            <div class="img-box" id="img-q10"></div>
+        </div>
+    </div>
+</body>
+<script src="compress.js"></script>
+</html>
