@@ -5,7 +5,7 @@ var imgs = [
   Q('#img-q10')
 ];
 
-On(Q('#btn-upload'), 'click', function () {
+On(Q('#btn-upload'), 'touchend', function () {
   Q('#input-img').click();
 });
 
