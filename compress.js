@@ -40,12 +40,15 @@ On(Q('#input-img'), 'change', function () {
 function compress (origin, rate) {
   var canvas = document.createElement('canvas'),
       ctx    = canvas.getContext('2d'),
-      output = new Image();
+      output = new Image(),
+      type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1');
+
+  console.log(type);
 
   canvas.width  = origin.width;
   canvas.height = origin.height;
   ctx.drawImage(origin, 0, 0, origin.width, origin.height);
-  output.src = canvas.toDataURL('image/jpeg', rate);
+  output.src = canvas.toDataURL(type, rate);
   return output;
 }
 
