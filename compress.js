@@ -6,7 +6,7 @@ var imgs = [
     ],
     sizeRatio = 1;
 
-On(Q('#btn-upload'), 'touchend', function () {
+On(Q('#btn-upload'), 'click', function () {
   Q('#input-img').click();
 });
 
@@ -20,15 +20,19 @@ On(Q('#input-img'), 'change', function () {
       sizeRatio = Math.pow(1024 * 1024 / reader.result.length, 0.5);
     }
     On(origin, 'load', function () {
-      var q80 = compress(origin, .8),
-          q40 = compress(origin, .4),
-          q10 = compress(origin, .1);
-      imgs[1].innerHTML = "文件大小：" + (q80.src.length / 1024).toFixed(2) + 'KB';
-      imgs[2].innerHTML = "文件大小：" + (q40.src.length / 1024).toFixed(2) + 'KB';
-      imgs[3].innerHTML = "文件大小：" + (q10.src.length / 1024).toFixed(2) + 'KB';
-      imgs[1].appendChild(compress(origin, .8));
-      imgs[2].appendChild(compress(origin, .4));
-      imgs[3].appendChild(compress(origin, .1));
+      EXIF.getData(origin, function() {
+        var orient = EXIF.getTag(this, 'Orientation') || 1,
+            q80    = compress(origin, .8, orient),
+            q40    = compress(origin, .4, orient),
+            q10    = compress(origin, .1, orient);
+
+        imgs[1].innerHTML = "文件大小：" + (q80.src.length / 1024).toFixed(2) + 'KB';
+        imgs[2].innerHTML = "文件大小：" + (q40.src.length / 1024).toFixed(2) + 'KB';
+        imgs[3].innerHTML = "文件大小：" + (q10.src.length / 1024).toFixed(2) + 'KB';
+        imgs[1].appendChild(q80);
+        imgs[2].appendChild(q40);
+        imgs[3].appendChild(q10);
+      });
     });
     origin.src = reader.result;
     imgs[0].innerHTML = '文件大小：' + (origin.src.length / 1024).toFixed(2) + 'KB';
@@ -41,22 +45,50 @@ On(Q('#input-img'), 'change', function () {
   }
 });
 
-function compress (origin, rate) {
+function compress (origin, rate, orient) {
   var canvas = document.createElement('canvas'),
       ctx    = canvas.getContext('2d'),
       output = new Image(),
       type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1'),
       size   = {
-        width: (origin.naturalWidth || origin.width) * sizeRatio,
-        height: (origin.naturalHeight || origin.height) * sizeRatio
+        width: Math.max(origin.naturalWidth, origin.width) * sizeRatio,
+        height: Math.max(origin.naturalHeight, origin.height) * sizeRatio
       };
 
-  canvas.width        = size.width;
-  canvas.height       = size.height;
   canvas.style.width  = size.width + 'px';
   canvas.style.height = size.height + 'px';
+
+  function setSize (cvs, width, height) {
+    cvs.width  = width;
+    cvs.height = height;
+  }
+
+  setSize(canvas, size.width, size.height);
+
+  // if (parseInt(orient) === 6) {
+  //   ctx.save();
+  //   ctx.rotate(Math.PI / 2);
+  //   ctx.translate(0, -size.width);
+  //   ctx.drawImage(origin, 0, 0);
+  //   ctx.restore();
+  // }
+
+  // if (parseInt(orient) === 8) {
+  //   ctx.save();
+  //   ctx.rotate(-Math.PI / 2);
+  //   ctx.translate(-size.height, 0);
+  //   ctx.drawImage(origin, 0, 0);
+  //   ctx.restore();
+  // }
+
+  // if (parseInt(orient) === 1) {
+  //   ctx.drawImage(origin, 0, 0, size.width, size.height);
+  // }
+
   ctx.drawImage(origin, 0, 0, size.width, size.height);
+
   output.src = canvas.toDataURL(type, rate);
+
   return output;
 }
 
