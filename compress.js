@@ -67,6 +67,8 @@ function compress (origin, rate, orient) {
 
    if (parseInt(orient) === 6) {
      alert(orient);
+     alert(size.width);
+     alert(size.height);
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
