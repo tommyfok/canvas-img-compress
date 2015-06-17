@@ -68,7 +68,6 @@ function compress (origin, rate, orient) {
    if (parseInt(orient) === 6) {
      ctx.save();
      ctx.rotate(Math.PI / 2);
-     ctx.translate(0, -size.height);
      ctx.drawImage(origin, 0, 0, size.height, size.width);
      ctx.restore();
    }
