@@ -85,7 +85,7 @@ function compress (origin, rate, orient) {
      ctx.drawImage(origin, 0, 0, size.width, size.height);
    }
 
-  ctx.drawImage(origin, 0, 0, size.width, size.height);
+//   ctx.drawImage(origin, 0, 0, size.width, size.height);
 
   output.src = canvas.toDataURL(type, rate);
 
