@@ -34,7 +34,7 @@ On(Q('#input-img'), 'change', function () {
         imgs[3].appendChild(q10);
       });
     });
-    origin.src = 'data:image/jpeg;base64,' + reader.result.split(',')[0];
+    origin.src = 'data:image/jpeg;base64,' + reader.result.split(',')[1];
     imgs[0].innerHTML = '文件大小：' + (origin.src.length / 1024).toFixed(2) + 'KB';
     imgs[0].appendChild(origin);
     Q('#previews').className = 'show';
