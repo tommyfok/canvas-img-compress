@@ -66,14 +66,16 @@ function compress (origin, rate, orient) {
   setSize(canvas, size.width, size.height);
 
    if (parseInt(orient) === 6) {
+     alert(orient);
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
-     ctx.drawImage(origin, 0, 0, size.height, size.width);
+     ctx.drawImage(origin, 0, 0, size.width, size.height);
      ctx.restore();
    }
 
    if (parseInt(orient) === 8) {
+     alert(orient);
      ctx.save();
      ctx.rotate(-Math.PI / 2);
      ctx.translate(-size.height, 0);
@@ -82,6 +84,7 @@ function compress (origin, rate, orient) {
    }
 
    if (parseInt(orient) === 1) {
+     alert(orient);
      ctx.drawImage(origin, 0, 0, size.width, size.height);
    }
 
