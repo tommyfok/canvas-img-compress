@@ -68,11 +68,10 @@ function compress (origin, rate, orient) {
   setSize(canvas, size.width, size.height);
 
    if (parseInt(orient) === 6) {
-     var maxSize = Math.max(size.width, size.height);
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
-     ctx.drawImage(origin, 0, 0, origin.width, origin.height, 0, 0, size.width, size.height);
+     ctx.drawImage(origin, 0, 0, size.width, size.height);
      ctx.restore();
    }
 
