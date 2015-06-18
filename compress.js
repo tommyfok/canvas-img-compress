@@ -50,9 +50,13 @@ function compress (origin, rate, orient) {
       ctx    = canvas.getContext('2d'),
       output = new Image(),
       type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1'),
+      osize  = {
+        width: Math.max(origin.naturalWidth, origin.width),
+        height: Math.max(origin.naturalHeight, origin.height)
+      },
       size   = {
-        width: Math.max(origin.naturalWidth, origin.width) * sizeRatio,
-        height: Math.max(origin.naturalHeight, origin.height) * sizeRatio
+        width: osize.width * sizeRatio,
+        height: osize.height * sizeRatio
       };
 
   canvas.style.width  = size.width + 'px';
@@ -69,7 +73,7 @@ function compress (origin, rate, orient) {
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
-     ctx.drawImage(origin, 0, 0, size.height, size.width, 0, 0, size.height, size.width);
+     ctx.drawImage(origin, 0, 0, size.height, size.width, 0, 0, osize.height, osize.width);
      ctx.restore();
    }
 
