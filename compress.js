@@ -46,6 +46,7 @@ On(Q('#input-img'), 'change', function () {
 });
 
 function compress (origin, rate, orient) {
+  console.debug('orient', orient);
   var canvas = document.createElement('canvas'),
       ctx    = canvas.getContext('2d'),
       output = new Image(),
@@ -58,8 +59,8 @@ function compress (origin, rate, orient) {
         width: osize.width * sizeRatio,
         height: osize.height * sizeRatio
       };
-  console.log(osize);
-  console.log(size);
+  console.debug('osize', osize);
+  console.debug('size', size);
 
   canvas.style.width  = size.width + 'px';
   canvas.style.height = size.height + 'px';
