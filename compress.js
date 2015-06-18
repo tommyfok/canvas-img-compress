@@ -46,16 +46,18 @@ On(Q('#input-img'), 'change', function () {
 });
 
 function compress (origin, rate, orient) {
-  console.debug('orient', orient);
   var canvas = document.createElement('canvas'),
       ctx    = canvas.getContext('2d'),
       output = new Image(),
       type   = origin.src.replace(/^.+:(\w+\/\w+);.+$/gi, '$1'),
+      osize   = {
+        width: origin.naturalWidth || origin.width,
+        height: origin.naturalHeight || origin.height
+      },
       size   = {
-        width: origin.width * sizeRatio,
-        height: origin.height * sizeRatio
+        width: osize.width * sizeRatio,
+        height: osize.height * sizeRatio
       };
-  console.debug('size', size);
 
   canvas.style.width  = size.width + 'px';
   canvas.style.height = size.height + 'px';
@@ -71,7 +73,7 @@ function compress (origin, rate, orient) {
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
-     ctx.drawImage(origin, 0, 0, origin.width, origin.height, 0, 0, size.height, size.width);
+     ctx.drawImage(origin, 0, 0, osize.width, osize.height, 0, 0, size.height, size.width);
      ctx.restore();
    }
 
