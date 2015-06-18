@@ -58,6 +58,8 @@ function compress (origin, rate, orient) {
         width: osize.width * sizeRatio,
         height: osize.height * sizeRatio
       };
+  console.log(osize);
+  console.log(size);
 
   canvas.style.width  = size.width + 'px';
   canvas.style.height = size.height + 'px';
