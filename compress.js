@@ -73,7 +73,7 @@ function compress (origin, rate, orient) {
      ctx.save();
      ctx.rotate(Math.PI / 2);
      ctx.translate(0, -size.width);
-     ctx.drawImage(origin, 0, 0, size.height, size.width, 0, 0, osize.height, osize.width);
+     ctx.drawImage(origin, 0, 0, osize.height, osize.width, 0, 0, size.height, size.width);
      ctx.restore();
    }
 
